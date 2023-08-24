@@ -963,6 +963,8 @@ value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
 
 Returns same map type filtered by given predicate.
 
+通过自定义条件,过滤`map` . 返回同类型`map`
+
 ```go
 m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
     return value%2 == 1
@@ -975,6 +977,8 @@ m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, va
 ### PickByKeys
 
 Returns same map type filtered by given keys.
+
+通过给定的`Keys数组`,过滤`map`. 返回同类型`map`
 
 ```go
 m := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
