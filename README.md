@@ -963,7 +963,7 @@ value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
 
 Returns same map type filtered by given predicate.
 
-通过自定义条件,过滤`map` . 返回同类型`map`
+	通过自定义条件,过滤`map` . 返回同类型`map`
 
 ```go
 m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
@@ -978,7 +978,7 @@ m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, va
 
 Returns same map type filtered by given keys.
 
-通过给定的`Keys数组`,过滤`map`. 返回同类型`map`
+	通过给定的`Keys数组`,过滤`map`. 返回同类型`map`
 
 ```go
 m := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
@@ -989,7 +989,7 @@ m := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo",
 
 ### PickByValues
 
-Returns same map type filtered by given values.
+	通过给定的`Values数组`,过滤`map`. 返回同类型`map`
 
 ```go
 m := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
@@ -1001,6 +1001,8 @@ m := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 ### OmitBy
 
 Returns same map type filtered by given predicate.
+
+	通过自定义条件,返回不满足条件的`map`.
 
 ```go
 m := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
@@ -1015,6 +1017,9 @@ m := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, va
 
 Returns same map type filtered by given keys.
 
+	通过给定的`Keys数组`,返回不满足条件的`map`.
+
+
 ```go
 m := lo.OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 // map[string]int{"bar": 2}
@@ -1026,6 +1031,9 @@ m := lo.OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo",
 
 Returns same map type filtered by given values.
 
+	通过给定的`Values数组`,返回不满足条件的`map`.
+
+
 ```go
 m := lo.OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 // map[string]int{"bar": 2}
@@ -1036,6 +1044,8 @@ m := lo.OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 ### Entries (alias: ToPairs)
 
 Transforms a map into array of key/value pairs.
+
+	将映射转换为键/值对数组。
 
 ```go
 entries := lo.Entries(map[string]int{"foo": 1, "bar": 2})
@@ -1057,6 +1067,8 @@ entries := lo.Entries(map[string]int{"foo": 1, "bar": 2})
 
 Transforms an array of key/value pairs into a map.
 
+	将键/值对数组转换为`map`。
+
 ```go
 m := lo.FromEntries([]lo.Entry[string, int]{
     {
@@ -1077,6 +1089,9 @@ m := lo.FromEntries([]lo.Entry[string, int]{
 
 Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
 
+	互换`map` Key | value
+	如果 `map`包含重复值，则后续值将覆盖前一个值的属性赋值。
+
 ```go
 m1 := lo.Invert(map[string]int{"a": 1, "b": 2})
 // map[int]string{1: "a", 2: "b"}
@@ -1090,6 +1105,8 @@ m2 := lo.Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 ### Assign
 
 Merges multiple maps from left to right.
+
+	从左到右合并多个`map`.
 
 ```go
 mergedMaps := lo.Assign[string, int](
@@ -1105,6 +1122,8 @@ mergedMaps := lo.Assign[string, int](
 
 Manipulates a map keys and transforms it to a map of another type.
 
+	通过自定义func,操作`map`键名.
+
 ```go
 m2 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
     return strconv.FormatInt(int64(v), 10)
@@ -1117,6 +1136,8 @@ m2 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string 
 ### MapValues
 
 Manipulates a map values and transforms it to a map of another type.
+
+	通过自定义func,操作`map`键值.
 
 ```go
 m1 := map[int]int64{1: 1, 2: 2, 3: 3}
@@ -1133,6 +1154,9 @@ m2 := lo.MapValues(m1, func(x int64, _ int) string {
 
 Manipulates a map entries and transforms it to a map of another type.
 
+	根据自定义方法,操作 Map 的 Key | value
+
+
 ```go
 in := map[string]int{"foo": 1, "bar": 2}
 
@@ -1147,6 +1171,8 @@ out := lo.MapEntries(in, func(k string, v int) (int, string) {
 ### MapToSlice
 
 Transforms a map into a slice based on specific iteratee.
+	
+	根据自定义方法,将Map转换为特定类型的Slice
 
 ```go
 m := map[int]int64{1: 4, 2: 5, 3: 6}
@@ -1162,6 +1188,8 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+	按照特定规则创建数组,包括步进等规则.
 
 ```go
 result := lo.Range(4)
@@ -1195,6 +1223,8 @@ result := lo.Range(0)
 
 Clamps number within the inclusive lower and upper bounds.
 
+	将数字夹在上下边界内.在边界内返回数值本身,超出边界返回边界值.
+
 ```go
 r1 := lo.Clamp(0, -10, 10)
 // 0
@@ -1214,6 +1244,9 @@ Sums the values in a collection.
 
 If collection is empty 0 is returned.
 
+		对切片值求和, 如果切片为空则返回 0.
+
+
 ```go
 list := []int{1, 2, 3, 4, 5}
 sum := lo.Sum(list)
@@ -1228,6 +1261,8 @@ Summarizes the values in a collection using the given return value from the iter
 
 If collection is empty 0 is returned.
 
+	通过自定义函数,对函数结果求和.
+
 ```go
 strings := []string{"foo", "bar"}
 sum := lo.SumBy(strings, func(item string) int {
@@ -1241,7 +1276,9 @@ sum := lo.SumBy(strings, func(item string) int {
 ### RandomString
 
 Returns a random string of the specified length and made of the specified charset.
-
+	
+	返回指定长度并由指定字符集组成的随机字符串。
+	
 ```go
 str := lo.RandomString(5, lo.LettersCharset)
 // example: "eIGbt"
@@ -1252,6 +1289,8 @@ str := lo.RandomString(5, lo.LettersCharset)
 ### Substring
 
 Return part of a string.
+	
+	截取字符串
 
 ```go
 sub := lo.Substring("hello", 2, 3)
@@ -1269,6 +1308,8 @@ sub := lo.Substring("hello", -2, math.MaxUint)
 ### ChunkString
 
 Returns an array of strings split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
+
+	将字符串分割成切片
 
 ```go
 lo.ChunkString("123456", 2)
@@ -1290,12 +1331,18 @@ lo.ChunkString("1", 2)
 
 An alias to utf8.RuneCountInString which returns the number of runes in string.
 
+	utf8的别名。RuneCountInString返回字符串中utf8字符的数目(中文字数)。
+
 ```go
 sub := lo.RuneLength("hellô")
 // 5
 
 sub := len("hellô")
 // 6
+
+lo.RuneLength("你好")  // 2
+
+len("你好")  // 6
 ```
 
 [[play](https://go.dev/play/p/tuhgW_lWY8l)]
@@ -1303,6 +1350,8 @@ sub := len("hellô")
 ### T2 -> T9
 
 Creates a tuple from a list of values.
+
+	装包
 
 ```go
 tuple1 := lo.T2("x", 1)
@@ -1318,6 +1367,8 @@ tuple2 := lo.T2(example())
 ### Unpack2 -> Unpack9
 
 Returns values contained in tuple.
+
+	解包
 
 ```go
 r1, r2 := lo.Unpack2(lo.Tuple2[string, int]{"a", 1})
@@ -1340,6 +1391,8 @@ Zip creates a slice of grouped elements, the first of which contains the first e
 
 When collections have different size, the Tuple attributes are filled with zero value.
 
+	压缩切片
+
 ```go
 tuples := lo.Zip2([]string{"a", "b"}, []int{1, 2})
 // []Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}
@@ -1350,6 +1403,8 @@ tuples := lo.Zip2([]string{"a", "b"}, []int{1, 2})
 ### Unzip2 -> Unzip9
 
 Unzip accepts an array of grouped elements and creates an array regrouping the elements to their pre-zip configuration.
+
+	解压切片
 
 ```go
 a, b := lo.Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
@@ -1364,6 +1419,10 @@ a, b := lo.Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 Distributes messages from input channels into N child channels. Close events are propagated to children.
 
 Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
+
+	将来自输入通道的消息分发到N个子通道。关闭事件被传播给子事件。
+
+	底层通道可以具有固定的缓冲容量，也可以在cap为0时不进行缓冲。
 
 ```go
 ch := make(chan int, 42)
