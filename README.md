@@ -1453,7 +1453,11 @@ for i := range children {
 
 Many distributions strategies are available:
 
+// 以轮换顺序的方式分发消息。
 - [lo.DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
+	
+	以随机方式分发消息。
+	
 - [lo.DispatchingStrategyRandom](./channel.go): Distributes messages in a random manner.
 - [lo.DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
 - [lo.DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
@@ -1666,6 +1670,8 @@ all := lo.FanOut(5, 100, stream)
 
 Returns true if an element is present in a collection.
 
+	如果元素存在于集合中，则返回true。
+
 ```go
 present := lo.Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
@@ -1674,6 +1680,8 @@ present := lo.Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 ### ContainsBy
 
 Returns true if the predicate function returns `true`.
+	
+	如果满足自定义条件 返回true
 
 ```go
 present := lo.ContainsBy([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
@@ -1685,6 +1693,8 @@ present := lo.ContainsBy([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
 ### Every
 
 Returns true if all elements of a subset are contained into a collection or if the subset is empty.
+
+	如果集合中包含子集的所有元素，或者子集为空，则返回true。
 
 ```go
 ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -1698,6 +1708,8 @@ ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 
 Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
 
+	如果自定义 func 对集合中的所有元素都返回true，或者集合为空，则返回true。
+
 ```go
 b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 5
@@ -1709,6 +1721,9 @@ b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
 
 Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
+
+	如果集合中至少包含子集的一个元素，则返回true。
+	如果子集为空，则Some返回false。
 
 ```go
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -1723,6 +1738,8 @@ ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 Returns true if the predicate returns true for any of the elements in the collection.
 If the collection is empty SomeBy returns false.
 
+	如果自定义 func 对集合中的任何元素返回true，则返回true。如果集合为空，SomeBy返回false。
+
 ```go
 b := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 3
@@ -1733,6 +1750,8 @@ b := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
 ### None
 
 Returns true if no element of a subset are contained into a collection or if the subset is empty.
+
+	如果集合中不包含子集的任何元素，或者子集为空，则返回true
 
 ```go
 b := None([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -1745,6 +1764,8 @@ b := None([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 
 Returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
 
+	如果自定义 func 对集合中的任何元素都不返回true，或者集合为空，则返回true
+	
 ```go
 b := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 0
@@ -1755,6 +1776,8 @@ b := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
 ### Intersect
 
 Returns the intersection between two collections.
+
+	返回两个集合的交集
 
 ```go
 result1 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -1774,6 +1797,8 @@ Returns the difference between two collections.
 - The first value is the collection of element absent of list2.
 - The second value is the collection of element absent of list1.
 
+	返回两个集合各自的差集
+
 ```go
 left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 // []int{1, 3, 4, 5}, []int{6}
@@ -1786,6 +1811,8 @@ left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 
 Returns all distinct elements from given collections. Result will not change the order of elements relatively.
 
+	合并切片(集合),并去重.
+
 ```go
 union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 // []int{0, 1, 2, 3, 4, 5, 10}
@@ -1794,6 +1821,8 @@ union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 ### Without
 
 Returns slice excluding all given values.
+
+	返回不包含所有给定值的切片。
 
 ```go
 subset := lo.Without([]int{0, 2, 10}, 2)
@@ -1807,6 +1836,8 @@ subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 
 Returns slice excluding empty values.
 
+	返回过滤零值后的切片
+
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
 // []int{2, 10}
@@ -1815,6 +1846,8 @@ subset := lo.WithoutEmpty([]int{0, 2, 10})
 ### IndexOf
 
 Returns the index at which the first occurrence of a value is found in an array or return -1 if the value cannot be found.
+
+	返回数组中第一次找到值的索引，如果找不到值则返回-1。
 
 ```go
 found := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
@@ -1828,6 +1861,8 @@ notFound := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 
 Returns the index at which the last occurrence of a value is found in an array or return -1 if the value cannot be found.
 
+	返回数组中最后出现的值所在的索引，如果找不到该值则返回-1。
+
 ```go
 found := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
 // 4
@@ -1839,6 +1874,8 @@ notFound := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 ### Find
 
 Search an element in a slice based on a predicate. It returns element and true if element was found.
+
+	根据自定义函数查找字符串切片中的元素,找到返回 true
 
 ```go
 str, ok := lo.Find([]string{"a", "b", "c", "d"}, func(i string) bool {
@@ -1856,6 +1893,8 @@ str, ok := lo.Find([]string{"foobar"}, func(i string) bool {
 
 FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
 
+	FindIndexOf根据自定义函数搜索片中的元素，并返回索引和true。如果没有找到该元素，则返回-1和false。
+
 ```go
 str, index, ok := lo.FindIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
     return i == "b"
@@ -1871,6 +1910,8 @@ str, index, ok := lo.FindIndexOf([]string{"foobar"}, func(i string) bool {
 ### FindLastIndexOf
 
 FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+	FindLastIndexOf根据自定义函数搜索片中的最后出现的元素，并返回索引和true。如果没有找到该元素，则返回-1和false
 
 ```go
 str, index, ok := lo.FindLastIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
@@ -1888,6 +1929,8 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 
 Search an element in a slice based on a predicate. It returns element and true if element was found.
 
+	根据自定义函数搜索片中的元素。它返回元素，如果找到元素则返回该元素。否则返回自定义值 X
+
 ```go
 str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
     return i == "b"
@@ -1903,6 +1946,8 @@ str := lo.FindOrElse([]string{"foobar"}, "x", func(i string) bool {
 ### FindKey
 
 Returns the key of the first value matching.
+
+	返回第一个值匹配的键
 
 ```go
 result1, ok1 := lo.FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 2)
@@ -1922,6 +1967,8 @@ result3, ok3 := lo.FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"
 
 Returns the key of the first element predicate returns truthy for.
 
+	根据自定义函数 返回第一个元素的键值。
+
 ```go
 result1, ok1 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
     return k == "foo"
@@ -1938,6 +1985,8 @@ result2, ok2 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(
 
 Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array.
 
+	返回一个包含集合中所有唯一元素的切片。结果值的顺序由它们在数组中出现的顺序决定。
+
 ```go
 uniqueValues := lo.FindUniques([]int{1, 2, 2, 1, 2, 3})
 // []int{3}
@@ -1946,6 +1995,8 @@ uniqueValues := lo.FindUniques([]int{1, 2, 2, 1, 2, 3})
 ### FindUniquesBy
 
 Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+
+	返回一个集合中符合自定义函数计算结果的唯一元素的切片。结果值的顺序由它们在数组中出现的顺序决定。
 
 ```go
 uniqueValues := lo.FindUniquesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
@@ -1958,6 +2009,8 @@ uniqueValues := lo.FindUniquesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 
 Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
 
+	返回包含集合中每个重复元素首次出现的片。结果值的顺序由它们在数组中出现的顺序决定。
+
 ```go
 duplicatedValues := lo.FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 // []int{1, 2}
@@ -1966,6 +2019,8 @@ duplicatedValues := lo.FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 ### FindDuplicatesBy
 
 Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+
+		根据自定义函数,返回包含集合中每个重复元素首次出现的片。结果值的顺序由它们在数组中出现的顺序决定。
 
 ```go
 duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
@@ -1979,6 +2034,8 @@ duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 Search the minimum value of a collection.
 
 Returns zero value when collection is empty.
+
+	搜索集合的最小值。当集合为空时返回零值。
 
 ```go
 min := lo.Min([]int{1, 2, 3})
@@ -1995,6 +2052,11 @@ Search the minimum value of a collection using the given comparison function.
 If several values of the collection are equal to the smallest value, returns the first such value.
 
 Returns zero value when collection is empty.
+
+	使用给定的比较函数搜索集合的最小值。
+	如果集合中的多个值等于最小值，则返回第一个这样的值。
+	当集合为空时返回零值。
+
 
 ```go
 min := lo.MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
@@ -2014,6 +2076,9 @@ Search the maximum value of a collection.
 
 Returns zero value when collection is empty.
 
+		搜索集合的最大值。当集合为空时返回零值。
+
+
 ```go
 max := lo.Max([]int{1, 2, 3})
 // 3
@@ -2029,6 +2094,10 @@ Search the maximum value of a collection using the given comparison function.
 If several values of the collection are equal to the greatest value, returns the first such value.
 
 Returns zero value when collection is empty.
+
+	使用给定的比较函数搜索集合的最大值。
+	如果集合中的多个值等于最大值，则返回第一个这样的值。
+	当集合为空时返回零值。
 
 ```go
 max := lo.MaxBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
@@ -2046,6 +2115,8 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
 
 Returns the last element of a collection or error if empty.
 
+	返回集合的最后一个元素，如果为空则返回错误。
+
 ```go
 last, err := lo.Last([]int{1, 2, 3})
 // 3
@@ -2054,6 +2125,8 @@ last, err := lo.Last([]int{1, 2, 3})
 ### Nth
 
 Returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned. An error is returned when nth is out of slice bounds.
+
+	返回集合索引' n '处的元素。如果' n '是负数，则返回从末尾开始的第n个元素。当n超出切片界限时返回错误。
 
 ```go
 nth, err := lo.Nth([]int{0, 1, 2, 3}, 2)
@@ -2067,6 +2140,8 @@ nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 
 Returns a random item from collection.
 
+	从集合中返回一个随机项。
+
 ```go
 lo.Sample([]string{"a", "b", "c"})
 // a random string from []string{"a", "b", "c"}
@@ -2079,6 +2154,8 @@ lo.Sample([]string{})
 
 Returns N random unique items from collection.
 
+	从集合中返回N个随机唯一项。
+
 ```go
 lo.Samples([]string{"a", "b", "c"}, 3)
 // []string{"a", "b", "c"} in random order
@@ -2087,6 +2164,8 @@ lo.Samples([]string{"a", "b", "c"}, 3)
 ### Ternary
 
 A 1 line if/else statement.
+
+	三元表达式 (函数式写法)
 
 ```go
 result := lo.Ternary(true, "a", "b")
@@ -2101,6 +2180,8 @@ result := lo.Ternary(false, "a", "b")
 ### TernaryF
 
 A 1 line if/else statement whose options are functions.
+
+	三元表达式 返回值为函数
 
 ```go
 result := lo.TernaryF(true, func() string { return "a" }, func() string { return "b" })
@@ -2222,6 +2303,8 @@ result := lo.Switch(1).
 
 Returns a pointer copy of value.
 
+	返回value的指针副本。
+	
 ```go
 ptr := lo.ToPtr("hello world")
 // *string{"hello world"}
@@ -2231,6 +2314,9 @@ ptr := lo.ToPtr("hello world")
 
 Returns a pointer copy of value if it's nonzero.
 Otherwise, returns nil pointer.
+
+	如果value为非零，则返回value的指针副本。
+	否则，返回nil指针。
 
 ```go
 ptr := lo.EmptyableToPtr[[]int](nil)
@@ -2250,6 +2336,8 @@ ptr := lo.EmptyableToPtr[string]("hello world")
 
 Returns the pointer value or empty.
 
+	返回指针指向的值或空。
+
 ```go
 str := "hello world"
 value := lo.FromPtr(&str)
@@ -2262,6 +2350,8 @@ value := lo.FromPtr[string](nil)
 ### FromPtrOr
 
 Returns the pointer value or the fallback value.
+
+	返回指针值, 如果为nil则返回指定值。
 
 ```go
 str := "hello world"
@@ -2276,6 +2366,8 @@ value := lo.FromPtrOr[string](nil, "empty")
 
 Returns a slice of pointer copy of value.
 
+	返回一个切片的指针副本
+
 ```go
 ptr := lo.ToSlicePtr([]string{"hello", "world"})
 // []*string{"hello", "world"}
@@ -2285,6 +2377,8 @@ ptr := lo.ToSlicePtr([]string{"hello", "world"})
 
 Returns a slice with all elements mapped to `any` type.
 
+	返回一个所有元素都映射到' any '类型的切片。
+
 ```go
 elements := lo.ToAnySlice([]int{1, 5, 1})
 // []any{1, 5, 1}
@@ -2293,6 +2387,8 @@ elements := lo.ToAnySlice([]int{1, 5, 1})
 ### FromAnySlice
 
 Returns an `any` slice with all elements mapped to a type. Returns false in case of type conversion failure.
+
+	将 any 类型切片其中所有元素都映射到一个类型,返回一个类型的切片。类型转换失败时返回false。
 
 ```go
 elements, ok := lo.FromAnySlice([]any{"foobar", 42})
@@ -2306,6 +2402,8 @@ elements, ok := lo.FromAnySlice([]any{"foobar", "42"})
 
 Returns an empty value.
 
+	返回指定类型的零值
+
 ```go
 lo.Empty[int]()
 // 0
@@ -2318,6 +2416,8 @@ lo.Empty[bool]()
 ### IsEmpty
 
 Returns true if argument is a zero value.
+
+	判断是否为空值,返回布尔值
 
 ```go
 lo.IsEmpty(0)
@@ -2344,6 +2444,8 @@ lo.IsEmpty(test{foobar: "foobar"})
 
 Returns true if argument is a zero value.
 
+	判断不为零值,返回布尔值
+
 ```go
 lo.IsNotEmpty(0)
 // false
@@ -2369,6 +2471,8 @@ lo.IsNotEmpty(test{foobar: "foobar"})
 
 Returns the first non-empty arguments. Arguments must be comparable.
 
+	返回第一个非空参数。参数必须具有可比性。
+
 ```go
 result, ok := lo.Coalesce(0, 1, 2, 3)
 // 1 true
@@ -2385,6 +2489,8 @@ result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 ### Partial
 
 Returns new function that, when called, has its first argument set to the provided value.
+
+	返回新函数，该函数在调用时将其第一个参数设置为所提供的值。
 
 ```go
 add := func(x, y int) int { return x + y }
@@ -2415,6 +2521,10 @@ f(42, -4)
 ### Attempt
 
 Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+	
+	调用函数N次，直到返回有效输出。返回捕获的错误或nil。
+	当第一个参数小于' 1 '时，该函数运行，直到返回成功的响应。
+	返回函数执行次数,及 error
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -2458,6 +2568,9 @@ Invokes a function N times until it returns valid output, with a pause between e
 
 When first argument is less than `1`, the function runs until a successful response is returned.
 
+	调用函数N次，直到返回有效输出，每次调用之间都有暂停。返回捕获的错误或nil。
+	当第一个参数小于' 1 '时，该函数运行，直到返回成功的响应。
+
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
     if i == 2 {
@@ -2480,6 +2593,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
 
 When first argument is less than `1`, the function runs until a successful response is returned.
+
+	调用函数N次，直到返回有效输出。返回捕获的错误或nil，并附带一个bool值来标识是否需要连续调用函数。如果第二个bool值返回false值，它将立即终止调用。
+	当第一个参数小于' 1 '时，该函数运行，直到返回成功的响应。
 
 ```go
 count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
@@ -2506,6 +2622,9 @@ Invokes a function N times until it returns valid output, with a pause between e
 
 When first argument is less than `1`, the function runs until a successful response is returned.
 
+	调用函数N次，直到返回有效输出，每次调用之间都有暂停。返回捕获的错误或nil，并附带一个bool值来标识是否需要连续调用函数。如果第二个bool值返回false值，它将立即终止调用。
+	当第一个参数小于' 1 '时，该函数运行，直到返回成功的响应。
+
 ```go
 count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
     err := doMockedHTTPRequest(i)
@@ -2529,6 +2648,8 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
 
+	' NewDebounce '创建一个去绑定实例，延迟调用给定的函数，直到等待毫秒后，直到' cancel '被调用。
+
 ```go
 f := func() {
     println("Called once after 100ms when debounce stopped invoking!")
@@ -2548,6 +2669,8 @@ cancel()
 ### DebounceBy
 
 `NewDebounceBy` creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
+
+	' NewDebounceBy '为每个不同的键创建一个去绑定实例，延迟调用给定的函数，直到等待毫秒后，直到' cancel '被调用。
 
 ```go
 f := func(key string, count int) {
@@ -2571,6 +2694,8 @@ cancel("second key")
 
 Wraps the underlying callback in a mutex. It receives an optional mutex.
 
+		将底层回调封装在互斥对象中。它接收一个可选的互斥锁。
+	
 ```go
 s := lo.Synchronize()
 
@@ -2598,6 +2723,8 @@ func foobar() {
 
 Executes a function in a goroutine and returns the result in a channel.
 
+	在程序中执行函数，并在通道中返回结果。
+	
 ```go
 ch := lo.Async(func() error { time.Sleep(10 * time.Second); return nil })
 // chan error (nil)
@@ -2629,6 +2756,8 @@ ch := lo.Async2(func() (int, string) {
 ### Transaction
 
 Implements a Saga pattern.
+
+	实现一个Saga模式。
 
 ```go
 transaction := NewTransaction[int]().
@@ -2682,6 +2811,8 @@ _, _ = transaction.Process(-5)
 
 Helper function that creates an error when a condition is not met.
 
+	当不满足条件时创建错误的辅助函数。
+
 ```go
 slice := []string{"a"}
 val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
@@ -2697,6 +2828,8 @@ val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", sli
 ### Must
 
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
+
+	如果第二个参数为' error '或' false '，则将函数调用包装为panic，否则返回值。
 
 ```go
 val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
@@ -2760,6 +2893,8 @@ lo.Must0(lo.Contains[int](list, item), "'%s' must always contain '%s'", list, it
 
 Calls the function and return false in case of error and on panic.
 
+	调用函数并在出现错误和紧急情况时返回false。
+
 ```go
 ok := lo.Try(func() error {
     panic("error")
@@ -2797,6 +2932,8 @@ ok := lo.Try2(func() (string, error) {
 ### TryOr
 
 Calls the function and return a default value in case of error and on panic.
+
+	调用函数并在出现错误和紧急情况时返回默认值。
 
 ```go
 str, ok := lo.TryOr(func() (string, error) {
@@ -2841,6 +2978,8 @@ str, nbr, ok := lo.TryOr2(func() (string, int, error) {
 
 The same behavior than `Try`, but also returns value passed to panic.
 
+	与' Try '相同的行为，但也返回传递给panic的值。
+
 ```go
 err, ok := lo.TryWithErrorValue(func() error {
     panic("error")
@@ -2854,6 +2993,8 @@ err, ok := lo.TryWithErrorValue(func() error {
 ### TryCatch
 
 The same behavior than `Try`, but calls the catch function in case of error.
+
+	与' Try '相同的行为，但在发生错误时调用catch函数。
 
 ```go
 caught := false
