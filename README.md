@@ -266,6 +266,8 @@ Constraints:
 
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
 
+	迭代一个集合，并返回一个包含谓词函数为其返回“true”的所有元素的数组。
+
 ```go
 even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
     return x%2 == 0
@@ -279,6 +281,8 @@ even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
 
 Manipulates a slice of one type and transforms it into a slice of another type:
 
+	操作一种类型的切片并将其转换为另一种类型的切片
+
 ```go
 import "github.com/samber/lo"
 
@@ -291,6 +295,8 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 [[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
 Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
+
+	多协程处理
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -307,6 +313,9 @@ Returns a slice which obtained after both filtering and mapping using the given 
 
 The callback function should return two values: the result of the mapping operation and whether the result element should be included or not.
 
+	返回使用给定回调函数过滤和映射后获得的切片。
+	回调函数应该返回两个值:映射操作的结果以及是否应该包含result元素。
+	
 ```go
 matching := lo.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
     if strings.HasSuffix(x, "pu") {
@@ -322,6 +331,8 @@ matching := lo.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x str
 ### FlatMap
 
 Manipulates a slice and transforms and flattens it to a slice of another type. The transform function can either return a slice or a `nil`, and in the `nil` case no value is added to the final slice.
+
+	操作切片，并将其转换为另一种类型的切片。transform函数可以返回一个切片或一个' nil '，在' nil '的情况下，没有值被添加到最后的切片。
 
 ```go
 lo.FlatMap([]int{0, 1, 2}, func(x int, _ int) []string {
@@ -339,6 +350,9 @@ lo.FlatMap([]int{0, 1, 2}, func(x int, _ int) []string {
 
 Reduces a collection to a single value. The value is calculated by accumulating the result of running each element in the collection through an accumulator function. Each successive invocation is supplied with the return value returned by the previous call.
 
+	将集合减少为单个值。该值是通过累加器函数累加集合中每个元素运行的结果来计算的。每次后续调用都提供前一次调用返回的返回值。
+		切片求和等场景
+
 ```go
 sum := lo.Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
     return agg + item
@@ -351,6 +365,8 @@ sum := lo.Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 ### ReduceRight
 
 Like `lo.Reduce` except that it iterates over elements of collection from right to left.
+	
+	和`lo.Reduce` 一样,从右到左遍历集合的元素。
 
 ```go
 result := lo.ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
@@ -365,6 +381,8 @@ result := lo.ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item [
 
 Iterates over elements of a collection and invokes the function over each element.
 
+		迭代集合的元素，并在每个元素上调用函数
+
 ```go
 import "github.com/samber/lo"
 
@@ -377,6 +395,8 @@ lo.ForEach([]string{"hello", "world"}, func(x string, _ int) {
 [[play](https://go.dev/play/p/oofyiUPRf8t)]
 
 Parallel processing: like `lo.ForEach()`, but the callback is called as a goroutine.
+
+	多协程调用
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -391,6 +411,9 @@ lop.ForEach([]string{"hello", "world"}, func(x string, _ int) {
 
 Times invokes the iteratee n times, returning an array of the results of each invocation. The iteratee is invoked with index as argument.
 
+	Times调用迭代对象n次，返回每次调用结果的数组。以index作为参数调用迭代对象。
+	快速生成有序数组
+
 ```go
 import "github.com/samber/lo"
 
@@ -403,6 +426,8 @@ lo.Times(3, func(i int) string {
 [[play](https://go.dev/play/p/vgQj3Glr6lT)]
 
 Parallel processing: like `lo.Times()`, but callback is called in goroutine.
+
+	协程调用
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -417,6 +442,9 @@ lop.Times(3, func(i int) string {
 
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array.
 
+	返回数组的无重复版本，其中只保留每个元素的第一次出现。结果值的顺序由它们在数组中出现的顺序决定。
+	数组去重场景
+
 ```go
 uniqValues := lo.Uniq([]int{1, 2, 2, 1})
 // []int{1, 2}
@@ -428,6 +456,10 @@ uniqValues := lo.Uniq([]int{1, 2, 2, 1})
 
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
+	返回数组的无重复版本，其中只保留每个元素的第一次出现。结果值的顺序由它们在数组中出现的顺序决定。
+	通过自定义函数处理,返回处理后的结果并去重	
+	
+	
 ```go
 uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
@@ -440,6 +472,8 @@ uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 ### GroupBy
 
 Returns an object composed of keys generated from the results of running each element of collection through iteratee.
+
+	返回一个对象，该对象由通过迭代器运行集合的每个元素的结果生成的键组成。
 
 ```go
 import lo "github.com/samber/lo"
@@ -454,6 +488,8 @@ groups := lo.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 
 Parallel processing: like `lo.GroupBy()`, but callback is called in goroutine.
 
+	多协程调用
+
 ```go
 import lop "github.com/samber/lo/parallel"
 
@@ -466,6 +502,8 @@ lop.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 ### Chunk
 
 Returns an array of elements split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
+
+	返回一个数组，其中的元素按大小分成若干组。如果数组不能平均分割，则最后的块将是剩余的元素。
 
 ```go
 lo.Chunk([]int{0, 1, 2, 3, 4, 5}, 2)
@@ -487,6 +525,10 @@ lo.Chunk([]int{0}, 2)
 
 Returns an array of elements split into groups. The order of grouped values is determined by the order they occur in collection. The grouping is generated from the results of running each element of collection through iteratee.
 
+	返回被分成组的元素数组。分组值的顺序由它们在集合中出现的顺序决定。分组是根据通过iteratee运行集合的每个元素的结果生成的
+	
+	按自定义条件切割数组
+
 ```go
 import lo "github.com/samber/lo"
 
@@ -504,6 +546,8 @@ partitions := lo.PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string
 [[play](https://go.dev/play/p/NfQ_nGjkgXW)]
 
 Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutine. Results are returned in the same order.
+
+	多协程调用
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -523,6 +567,8 @@ partitions := lop.PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) strin
 
 Returns an array a single level deep.
 
+返回一个单级深度的数组。 二维数组拆分成一维
+
 ```go
 flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 // []int{0, 1, 2, 3, 4, 5}
@@ -533,6 +579,8 @@ flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 ### Interleave
 
 Round-robin alternating input slices and sequentially appending value at index into result.
+
+	循环交替输入切片，并依次将索引处的值附加到结果中
 
 ```go
 interleaved := lo.Interleave([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
@@ -548,6 +596,8 @@ interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 
 
 Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
+	返回一个洗牌值的数组。使用Fisher-Yates洗牌算法
+
 ```go
 randomOrder := lo.Shuffle([]int{0, 1, 2, 3, 4, 5})
 // []int{1, 4, 0, 3, 5, 2}
@@ -561,6 +611,8 @@ Reverses array so that the first element becomes the last, the second element be
 
 ⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
 
+	反转数组，使第一个元素成为最后一个，第二个元素成为倒数第二个，依此类推。
+
 ```go
 reverseOrder := lo.Reverse([]int{0, 1, 2, 3, 4, 5})
 // []int{5, 4, 3, 2, 1, 0}
@@ -571,6 +623,8 @@ reverseOrder := lo.Reverse([]int{0, 1, 2, 3, 4, 5})
 ### Fill
 
 Fills elements of array with `initial` value.
+
+	用' initial '值填充数组元素。
 
 ```go
 type foo struct {
@@ -591,6 +645,8 @@ initializedSlice := lo.Fill([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
 
 Builds a slice with N copies of initial value.
 
+	构建一个包含N个初始值副本的切片。
+
 ```go
 type foo struct {
   bar string
@@ -610,6 +666,9 @@ slice := lo.Repeat(2, foo{"a"})
 
 Builds a slice with values returned by N calls of callback.
 
+	用N次回调调用返回的值构建一个切片。
+
+
 ```go
 slice := lo.RepeatBy(0, func (i int) string {
     return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
@@ -627,6 +686,8 @@ slice := lo.RepeatBy(5, func(i int) string {
 ### KeyBy
 
 Transforms a slice or an array of structs to a map based on a pivot callback.
+
+	根据自定义函数 将切片转换成 map
 
 ```go
 m := lo.KeyBy([]string{"a", "aa", "aaa"}, func(str string) int {
@@ -657,6 +718,10 @@ If any of two pairs would have the same key the last one gets added to the map.
 
 The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 
+	返回一个map，其中包含由应用于给定片的元素的转换函数提供的键值对。
+	如果两对中的任何一对具有相同的键，则最后一个将被添加到映射中。
+	返回的map中键的顺序没有指定，也不能保证与原始数组相同。
+
 ```go
 in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}}
 
@@ -671,6 +736,8 @@ aMap := lo.Associate(in, func (f *foo) (string, int) {
 ### Drop
 
 Drops n elements from the beginning of a slice or array.
+		
+			从切片或数组的开头删除n个元素。从左开始
 
 ```go
 l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2)
@@ -683,6 +750,8 @@ l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2)
 
 Drops n elements from the end of a slice or array.
 
+		从切片或数组的末尾删除n个元素。从右开始
+
 ```go
 l := lo.DropRight([]int{0, 1, 2, 3, 4, 5}, 2)
 // []int{0, 1, 2, 3}
@@ -693,6 +762,8 @@ l := lo.DropRight([]int{0, 1, 2, 3, 4, 5}, 2)
 ### DropWhile
 
 Drop elements from the beginning of a slice or array while the predicate returns true.
+
+	当自定义函数返回true时，从切片或数组的开头删除元素。
 
 ```go
 l := lo.DropWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
@@ -707,6 +778,9 @@ l := lo.DropWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool 
 
 Drop elements from the end of a slice or array while the predicate returns true.
 
+		当自定义函数返回true时，从切片或数组的开头删除元素。
+
+### 
 ```go
 l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
     return len(val) <= 2
